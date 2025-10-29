@@ -1,1 +1,1 @@
-<%@ Application Codebehind="Global.asax.cs" Inherits="AlzaAssignment.MvcApplication" Language="C#" %>
+<%@ Application Codebehind="Global.asax.cs" Inherits="AlzaAssignment.AlzaProductApiApplication" Language="C#" %>
