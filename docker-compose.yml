@@ -1,0 +1,31 @@
+version: '3.9'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    environment:
+      SA_PASSWORD: ${SQL_CONNECTION_PASSWORD}
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sql_data:/var/opt/mssql
+      - ./init:/docker-entrypoint-initdb.d 
+
+  api:
+    build:
+      context: .
+      dockerfile: Api/Dockerfile
+    container_name: AlzaProductApi
+    ports:
+      - "${API_PORT_HTTPS}:${API_PORT_HTTPS}"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:${API_PORT}
+      - ConnectionStrings__DefaultConnection=${SQL_CONNECTION}
+    depends_on:
+      - sqlserver
+
+volumes:
+  sql_data:

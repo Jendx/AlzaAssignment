@@ -154,3 +154,6 @@ $RECYCLE.BIN/
 .DS_Store
 
 _NCrunch*
+
+# Contains env settings (Will be passed in email)
+**/.env
