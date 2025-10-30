@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
@@ -19,10 +17,10 @@ services:
       dockerfile: Api/Dockerfile
     container_name: AlzaProductApi
     ports:
-      - "${API_PORT_HTTPS}:${API_PORT_HTTPS}"
+      - "${API_PORT_HTTP}:${API_PORT_HTTP}"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:${API_PORT}
+      - ASPNETCORE_URLS=http://+:${API_PORT_HTTP}
       - ConnectionStrings__DefaultConnection=${SQL_CONNECTION}
     depends_on:
       - sqlserver

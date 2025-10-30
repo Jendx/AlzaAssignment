@@ -1,14 +1,22 @@
 ﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER $APP_UID
 WORKDIR /app
 EXPOSE 7042
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
+
+# Copy all csproj files for restore
 COPY ["Api/Api.csproj", "Api/"]
+COPY ["Data/Data.csproj", "Data/"]
+COPY ["Domain/Domain.csproj", "Domain/"]
+
+# Restore dependencies
 RUN dotnet restore "Api/Api.csproj"
+
+# Copy the rest of the code
 COPY . .
+
 WORKDIR "/src/Api"
 RUN dotnet build "./Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
