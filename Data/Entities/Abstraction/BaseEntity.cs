@@ -6,5 +6,5 @@ namespace Data.Entities.Abstraction;
 [PrimaryKey(nameof(Id))]
 public abstract record BaseEntity
 {
-    public Guid Id { get; set; }
+    public required Guid Id { get; set; }
 }

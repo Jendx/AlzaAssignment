@@ -1,11 +1,9 @@
-using System.ComponentModel.DataAnnotations.Schema;
-using Data.Entities.Abstraction;
+namespace Domain.DTOs;
 
-namespace Data.Entities;
-
-[Table("Products")]
-public record Product(): BaseEntity, IAuditable, IConcurrent
+public record ProductDto
 {
+    public required Guid Id { get; set; }
+    
     /// <summary>
     /// Name of the products
     /// </summary>
@@ -24,15 +22,10 @@ public record Product(): BaseEntity, IAuditable, IConcurrent
     /// <summary>
     /// Product description
     /// </summary>
-    public string? Description { get; set; }
+    public string? Description { get; set; } = "";
     
     /// <summary>
     /// Current Stock of the product. In case of reserved products quantity can have negative value
     /// </summary>
-    public int? Stock { get; set; }
-    
-    public DateTime CreatedOn { get; set; }
-    public DateTime ModifiedOn { get; set; }
-    public string CreatedBy { get; set; } = "";
-    public byte[] RowVersion { get; set; } = [];
+    public int? Stock { get; init; }
 }
