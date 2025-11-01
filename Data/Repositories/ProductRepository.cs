@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Data.Repositories;
 
-internal sealed class ProductRepository(ProductDbContext context, ILogger logger) : IProductRepository
+public sealed class ProductRepository(ProductDbContext context, ILogger<ProductRepository> logger) : IProductRepository
 {
     private readonly ProductDbContext _context = context ?? throw new ArgumentNullException(nameof(context));
     private readonly ILogger _logger = logger ?? throw new ArgumentNullException(nameof(logger));

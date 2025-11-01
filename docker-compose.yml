@@ -10,6 +10,7 @@ services:
     volumes:
       - sql_data:/var/opt/mssql
       - ./init:/docker-entrypoint-initdb.d 
+    entrypoint: ["/bin/bash", "/docker-entrypoint-initdb.d/entrypoint.sh"]
 
   api:
     build:

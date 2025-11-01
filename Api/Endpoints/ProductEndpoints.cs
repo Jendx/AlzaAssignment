@@ -1,5 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 using Api.Commands;
+using Api.Mappers;
+using Domain.Providers;
+using Domain.Repositories;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Endpoints;
@@ -19,17 +23,17 @@ internal static class ProductEndpoints
             
         }).WithName("GetProduct");
         
-        group.MapPost("/", ( CreateProductCommand createCommand) =>
+        group.MapPost("/", async (CreateProductCommand createCommand, IProductProvider provider) =>
         {
+            var newProduct = ProductCommandMapper.ToProductDto(createCommand);
+            var createdProduct = await provider.CreateProductAsync(newProduct);
 
-            
-
+            return Results.Ok(createdProduct);
         }).WithName("CreateProduct");
 
-        group.MapPatch("/", ([Required] UpdateProductStockCommand createCommand) =>
+        group.MapPatch("/", (UpdateProductStockCommand updateCommand, IProductProvider provider) =>
         {
-
-
+            provider.UpdateProductStockAsync(updateCommand.Id, updateCommand.NewStock);
 
         }).WithName("UpdateProductStock")
         .WithDisplayName("Update Product")

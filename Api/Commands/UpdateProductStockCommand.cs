@@ -3,5 +3,5 @@ using System.ComponentModel.DataAnnotations;
 namespace Api.Commands;
 
 internal sealed record UpdateProductStockCommand(
-    [Required] string Id,
+    [Required] Guid Id,
     [Required] int NewStock);
