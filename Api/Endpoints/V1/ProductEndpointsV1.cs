@@ -1,26 +1,27 @@
 using System.ComponentModel.DataAnnotations;
 using Api.Commands;
+using Api.Helpers;
 using Api.Mappers;
 using Domain.Providers;
-using Domain.Repositories;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
 
-namespace Api.Endpoints;
+namespace Api.Endpoints.V1;
 
-internal static class ProductEndpoints
+internal static class ProductEndpointsV1
 {
     public static IEndpointRouteBuilder MapProductEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        var group = endpoints.MapGroup(Constants.Endpoints.PRODUCT_API_ENDPOINT);
-        group.MapGet("/", () =>
+        var endpointRoute = RouteHelper.GetControllerRoute(Constants.ApiVersions.V1, Constants.Endpoints.PRODUCT);
+        var group = endpoints.MapGroup(endpointRoute);
+        group.MapGet("/", async (IProductProvider provider) =>
         {
-            
+            var products = await provider.GetAllProductsAsync();
+            return Results.Ok(products);
         }).WithName("GetAllProducts");
         
-        group.MapGet("/{id:guid}", ([Required] Guid id) =>
+        group.MapGet("/{id:guid}", async ([Required] Guid id, IProductProvider provider) =>
         {
-            
+            var products = await provider.GetProductAsync(id);
+            return Results.Ok(products);
         }).WithName("GetProduct");
         
         group.MapPost("/", async (CreateProductCommand createCommand, IProductProvider provider) =>

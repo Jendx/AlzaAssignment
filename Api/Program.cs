@@ -1,4 +1,5 @@
 using Api.Endpoints;
+using Api.Endpoints.V1;
 using Api.Extensions;
 using Data.Context;
 using Domain.Providers;

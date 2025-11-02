@@ -1,1 +1,4 @@
-CREATE DATABASE Product;
+IF DB_ID('AdventureWorks2022') IS NULL
+BEGIN
+    CREATE DATABASE Product;
+END

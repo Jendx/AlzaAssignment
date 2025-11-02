@@ -10,7 +10,7 @@ namespace Data.Repositories;
 public sealed class ProductRepository(ProductDbContext context, ILogger<ProductRepository> logger) : IProductRepository
 {
     private readonly ProductDbContext _context = context ?? throw new ArgumentNullException(nameof(context));
-    private readonly ILogger _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    private readonly ILogger<ProductRepository> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
     /// <summary>
     /// Gets product with the specified <paramref name="productId"/>
