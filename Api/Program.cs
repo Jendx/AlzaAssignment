@@ -1,5 +1,6 @@
 using Api.Endpoints;
 using Api.Endpoints.V1;
+using Api.Endpoints.V2;
 using Api.Extensions;
 using Data.Context;
 using Domain.Providers;
@@ -25,8 +26,6 @@ internal class Program
             options.UseSqlServer(connectionString));
 
         var app = builder.Build();
-
-        // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
@@ -37,7 +36,10 @@ internal class Program
 
         app.UseAuthorization();
 
-        app.MapProductEndpoints();
+        // Register all endpoints
+        app
+            .MapProductEndpoints()
+            .MapProductEndpointsV2();
 
         app.Run();
     }

@@ -1,14 +1,11 @@
-using System.ComponentModel.DataAnnotations;
-using Api.Commands;
 using Api.Helpers;
-using Api.Mappers;
 using Domain.Providers;
 
 namespace Api.Endpoints.V2;
 
 internal static class ProductEndpointsV2
 {
-    public static IEndpointRouteBuilder MapProductEndpoints(this IEndpointRouteBuilder endpoints)
+    public static IEndpointRouteBuilder MapProductEndpointsV2(this IEndpointRouteBuilder endpoints)
     {
         var endpointRoute = RouteHelper.GetControllerRoute(Constants.ApiVersions.V2, Constants.Endpoints.PRODUCT);
         var group = endpoints.MapGroup(endpointRoute);
