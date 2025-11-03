@@ -4,6 +4,7 @@ using Api.Endpoints.V2;
 using Api.Extensions;
 using Data.Context;
 using Domain.Providers;
+using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api;
@@ -20,8 +21,10 @@ internal class Program
         builder.Services.AddSwaggerGen();
 
         builder.Services.RegisterServices();
-
-        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+        
+        Env.Load();
+        var connectionString = Environment.GetEnvironmentVariable("SQL_CONNECTION");
+        
         builder.Services.AddDbContext<ProductDbContext>(options =>
             options.UseSqlServer(connectionString));
 
