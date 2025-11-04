@@ -8,8 +8,10 @@ WORKDIR /src
 
 # Copy all csproj files for restore
 COPY ["Api/Api.csproj", "Api/"]
+COPY ["./../.env", "Api/"]
 COPY ["Data/Data.csproj", "Data/"]
 COPY ["Domain/Domain.csproj", "Domain/"]
+COPY ["UnitTests/UnitTests.csproj", "UnitTests/"]
 
 # Restore dependencies
 RUN dotnet restore "Api/Api.csproj"

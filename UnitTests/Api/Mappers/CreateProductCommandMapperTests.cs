@@ -36,10 +36,10 @@ public class CreateProductCommandMapperTests
     public void ToProductDto_ObjectIsNull_Throws()
     {
         // Arrange
-        var command = (CreateProductCommand) null;
+        var command = (CreateProductCommand?) null;
 
         // Act
-        var mappAction = () => ProductCommandMapper.ToProductDto(command);
+        var mappAction = () => ProductCommandMapper.ToProductDto(command!);
 
         // Assert
         mappAction.ShouldThrow<ArgumentNullException>();

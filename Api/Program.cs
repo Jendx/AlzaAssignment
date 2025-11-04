@@ -22,8 +22,9 @@ internal class Program
 
         builder.Services.RegisterServices();
         
-        Env.Load();
+        Env.TraversePath().Load();
         var connectionString = Environment.GetEnvironmentVariable("SQL_CONNECTION");
+        ArgumentNullException.ThrowIfNull(connectionString);
         
         builder.Services.AddDbContext<ProductDbContext>(options =>
             options.UseSqlServer(connectionString));

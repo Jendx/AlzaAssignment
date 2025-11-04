@@ -19,7 +19,7 @@ public sealed class ProductRepository(ProductDbContext context, ILogger<ProductR
     /// <returns></returns>
     public async Task<ProductDto> GetProductAsync(Guid productId)
     {
-        var product = await _context.Products.FirstOrDefaultAsync(x => x.Id == productId);
+        var product = await _context.Products.FindAsync(productId);
         if (product is null)
         {
             var error = new NullReferenceException("Product not found");
@@ -37,6 +37,7 @@ public sealed class ProductRepository(ProductDbContext context, ILogger<ProductR
     public async Task<List<ProductDto>> GetProductsAsync(int skip = 0, int take = 50)
     {
         var products = await _context.Products
+            .OrderBy(p => p.CreatedOn)
             .Skip(skip)
             .Take(take)
             .Select(x => ProductMapper.ToProductDto(x))
@@ -51,7 +52,7 @@ public sealed class ProductRepository(ProductDbContext context, ILogger<ProductR
     /// <returns></returns>
     public async Task<ProductDto> UpdateProductStockAsync(Guid productId, int newStock)
     {
-        var product = await _context.Products.FirstOrDefaultAsync(x => x.Id == productId);
+        var product = await _context.Products.FindAsync(productId);
         if (product is null)
         {
             var error = new NullReferenceException("Product not found");
@@ -75,14 +76,7 @@ public sealed class ProductRepository(ProductDbContext context, ILogger<ProductR
         await _context.Products.AddAsync(newProduct);
         await _context.SaveChangesAsync();
 
-        var addedProduct = await _context.Products.FirstOrDefaultAsync(x => x.Id == productDto.Id);
-        if (addedProduct is null)
-        {
-            var error = new NullReferenceException("Product not found");
-            _logger.LogError(error, "Newly created product {ProductDtoId} was not found", productDto.Id);
-            throw error;
-        }
-        
-        return ProductMapper.ToProductDto(addedProduct);
+        var addedProduct = await GetProductAsync(productDto.Id);
+        return addedProduct;
     }
 }
