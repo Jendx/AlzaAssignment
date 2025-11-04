@@ -10,7 +10,7 @@ internal static class ServiceRegistration
     {
         services
             .AddScoped<IProductRepository, ProductRepository>()
-            .AddScoped<IProductProvider, ProductProvider>();
+            .AddScoped<IProductService, ProductService>();
         
         return services;
     }

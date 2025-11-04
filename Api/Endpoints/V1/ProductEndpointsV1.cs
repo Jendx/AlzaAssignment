@@ -12,29 +12,29 @@ internal static class ProductEndpointsV1
     {
         var endpointRoute = RouteHelper.GetControllerRoute(Constants.ApiVersions.V1, Constants.Endpoints.PRODUCT);
         var group = endpoints.MapGroup(endpointRoute);
-        group.MapGet("/", async (IProductProvider provider) =>
+        group.MapGet("/", async (IProductService service) =>
         {
-            var products = await provider.GetAllProductsAsync();
+            var products = await service.GetAllProductsAsync();
             return Results.Ok(products);
         }).WithName("GetAllProducts");
         
-        group.MapGet("/{id:guid}", async ([Required] Guid id, IProductProvider provider) =>
+        group.MapGet("/{id:guid}", async ([Required] Guid id, IProductService service) =>
         {
-            var products = await provider.GetProductAsync(id);
+            var products = await service.GetProductAsync(id);
             return Results.Ok(products);
         }).WithName("GetProduct");
         
-        group.MapPost("/", async (CreateProductCommand createCommand, IProductProvider provider) =>
+        group.MapPost("/", async (CreateProductCommand createCommand, IProductService service) =>
         {
             var newProduct = ProductCommandMapper.ToProductDto(createCommand);
-            var createdProduct = await provider.CreateProductAsync(newProduct);
+            var createdProduct = await service.CreateProductAsync(newProduct);
 
             return Results.Ok(createdProduct);
         }).WithName("CreateProduct");
 
-        group.MapPatch("/", (UpdateProductStockCommand updateCommand, IProductProvider provider) =>
+        group.MapPatch("/", (UpdateProductStockCommand updateCommand, IProductService service) =>
         {
-            provider.UpdateProductStockAsync(updateCommand.Id, updateCommand.NewStock);
+            service.UpdateProductStockAsync(updateCommand.Id, updateCommand.NewStock);
 
         }).WithName("UpdateProductStock")
         .WithDisplayName("Update Product")

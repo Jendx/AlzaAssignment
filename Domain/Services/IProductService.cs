@@ -2,7 +2,7 @@ using Domain.DTOs;
 
 namespace Domain.Providers;
 
-public interface IProductProvider
+public interface IProductService
 {
     Task<ProductDto> GetProductAsync(Guid id);
     Task<List<ProductDto>> GetAllProductsAsync();

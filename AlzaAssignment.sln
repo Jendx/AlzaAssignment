@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{4E9B1A5C-959F-42AF-852E-C05DD592ACCC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KafkaJob", "KafkaJob\KafkaJob.csproj", "{6F4479EC-2221-4905-860D-650A5F232504}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{4E9B1A5C-959F-42AF-852E-C05DD592ACCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E9B1A5C-959F-42AF-852E-C05DD592ACCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E9B1A5C-959F-42AF-852E-C05DD592ACCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F4479EC-2221-4905-860D-650A5F232504}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F4479EC-2221-4905-860D-650A5F232504}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F4479EC-2221-4905-860D-650A5F232504}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F4479EC-2221-4905-860D-650A5F232504}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

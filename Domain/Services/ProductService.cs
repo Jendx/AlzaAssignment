@@ -3,7 +3,7 @@ using Domain.Repositories;
 
 namespace Domain.Providers;
 
-public sealed class ProductProvider (IProductRepository repository) : IProductProvider
+public sealed class ProductService (IProductRepository repository) : IProductService
 {
     private readonly IProductRepository _repository = repository ?? throw new ArgumentNullException(nameof(repository));
 

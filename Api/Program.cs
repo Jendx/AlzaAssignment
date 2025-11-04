@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Api;
 
-internal class Program
+internal static class Program
 {
     public static void Main(string[] args)
     {
@@ -24,7 +24,7 @@ internal class Program
         
         Env.TraversePath().Load();
         var connectionString = Environment.GetEnvironmentVariable("SQL_CONNECTION");
-        ArgumentNullException.ThrowIfNull(connectionString);
+        ArgumentException.ThrowIfNullOrWhiteSpace(connectionString);
         
         builder.Services.AddDbContext<ProductDbContext>(options =>
             options.UseSqlServer(connectionString));
