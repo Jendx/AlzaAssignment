@@ -1,5 +1,4 @@
 ﻿FROM mcr.microsoft.com/dotnet/runtime:8.0 AS base
-USER $APP_UID
 WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
@@ -8,7 +7,7 @@ WORKDIR /src
 
 # Copy projects
 COPY ["KafkaJob/KafkaJob.csproj", "KafkaJob/"]
-COPY ["./../.env", "KafkaJob/"]
+COPY [".env", "KafkaJob/"]
 COPY ["Domain/Domain.csproj", "Domain/"]
 
 RUN dotnet restore "KafkaJob/KafkaJob.csproj"
