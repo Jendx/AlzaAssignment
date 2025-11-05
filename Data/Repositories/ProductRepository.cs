@@ -34,7 +34,7 @@ public sealed class ProductRepository(ProductDbContext context, ILogger<ProductR
     /// Gets all products
     /// </summary>
     /// <returns></returns>
-    public async Task<List<ProductDto>> GetProductsAsync(int skip = 0, int take = 50)
+    public async Task<List<ProductDto>> GetProductsAsync(int skip = 0, int take = 10)
     {
         var products = await _context.Products
             .OrderBy(p => p.CreatedOn)
