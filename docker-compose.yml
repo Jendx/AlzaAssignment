@@ -12,23 +12,6 @@ services:
       - ./init:/docker-entrypoint-initdb.d 
     entrypoint: ["/bin/bash", "/docker-entrypoint-initdb.d/entrypoint.sh"]
 
-  api:
-    build:
-      context: .
-      dockerfile: Api/Dockerfile
-    container_name: AlzaProductApi
-    ports:
-      - "${API_PORT_HTTP}:${API_PORT_HTTP}"
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:${API_PORT_HTTP}
-      - ConnectionStrings__DefaultConnection=${SQL_CONNECTION}
-      - KAFKA_HOST=kafka
-      - KAFKA_PORT=9092
-    depends_on:
-      - sqlserver
-      - kafka
-
   akhq:
     image: tchiotludo/akhq
     environment:
@@ -48,33 +31,65 @@ services:
     container_name: kafka
     restart: always
     ports:
+      - "9092:9092"
       - "${KAFKA_PORT}:${KAFKA_PORT}"
     environment:
       KAFKA_NODE_ID: 1
       KAFKA_PROCESS_ROLES: broker,controller
       
-      KAFKA_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://${KAFKA_HOST}:${KAFKA_PORT},CONTROLLER://kafka:29093
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_LISTENERS: INTERNAL://:9092,EXTERNAL://:${KAFKA_PORT},CONTROLLER://kafka:29093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,EXTERNAL://${KAFKA_HOST}:${KAFKA_PORT}
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
       KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:29093
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://${KAFKA_HOST}:${KAFKA_PORT}
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
       
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+    
+    healthcheck:
+      test: [ "CMD", "kafka-topics", "--bootstrap-server", "kafka:9092", "--list" ]
+      interval: 10s
+      timeout: 10s
+      retries: 10
       
   kafkajob:
     build:
       context: .
       dockerfile: KafkaJob/Dockerfile
-    depends_on:
-      - kafka
     environment:
       - KAFKA_HOST=kafka
       - KAFKA_PORT=9092
+      - SQL_HOST=sqlserver
+      - SQL_CONNECTION=${SQL_CONNECTION}
     networks:
       - default
+    depends_on:
+      sqlserver:
+        condition: service_started
+      kafka:
+        condition: service_healthy
+
+  api:
+    build:
+      context: .
+      dockerfile: Api/Dockerfile
+    container_name: AlzaProductApi
+    ports:
+      - "${API_PORT_HTTP}:${API_PORT_HTTP}"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:${API_PORT_HTTP}
+      - SQL_HOST=sqlserver
+      - SQL_CONNECTION=${SQL_CONNECTION}
+      - KAFKA_HOST=kafka
+      - KAFKA_PORT=9092
+    depends_on:
+      sqlserver:
+        condition: service_started
+      kafka:
+        condition: service_healthy
 
 volumes:
   sql_data:

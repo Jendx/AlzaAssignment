@@ -1,4 +1,6 @@
-﻿using Data.Repositories;
+﻿using Data.Context;
+using Data.Extensions;
+using Data.Repositories;
 using Domain.Constants;
 using Domain.DTOs;
 using Domain.Messaging;
@@ -8,6 +10,7 @@ using DotNetEnv;
 using KafkaJob.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace KafkaJob;
 
@@ -28,15 +31,29 @@ internal static class Program
             .AddScoped<IProductRepository, ProductRepository>()
             .AddScoped<IProductService, ProductService>();
 
-        using var appHost = builder.Build();
-        await appHost.RunAsync();
+        builder.Services.UseDataMsSql();
         
+        using var appHost = builder.Build();
         var queueConsumer = appHost.Services.GetRequiredService<IQueueConsumer<UpdateProductDto>>();
-        var productService = appHost.Services.GetRequiredService<IProductService>();
+    
+        using ILoggerFactory factory = LoggerFactory.Create(builder => builder.AddConsole());
+        var logger = factory.CreateLogger("Program");
         await queueConsumer.SubscribeAsync(async (dto) =>
         {
-            ArgumentNullException.ThrowIfNull(dto.Stock);
-            await productService.UpdateProductStockAsync(dto.Id, dto.Stock.Value);
+            try
+            {
+                ArgumentNullException.ThrowIfNull(dto.Stock);
+                var productService = appHost.Services.GetRequiredService<IProductService>();
+                await productService.UpdateProductStockAsync(dto.Id, dto.Stock.Value);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, "Error occured during updating consumed product {id}", dto.Id);
+                throw;
+            }
+            
         });
+        
+        await appHost.RunAsync();
     }
 }

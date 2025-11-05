@@ -7,8 +7,8 @@ WORKDIR /src
 
 # Copy projects
 COPY ["KafkaJob/KafkaJob.csproj", "KafkaJob/"]
-COPY [".env", "KafkaJob/"]
 COPY ["Domain/Domain.csproj", "Domain/"]
+COPY ["Data/Data.csproj", "Data/"]
 
 RUN dotnet restore "KafkaJob/KafkaJob.csproj"
 COPY . .

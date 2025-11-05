@@ -3,6 +3,7 @@ using Api.Endpoints.V1;
 using Api.Endpoints.V2;
 using Api.Extensions;
 using Data.Context;
+using Data.Extensions;
 using Domain.Providers;
 using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
@@ -19,17 +20,13 @@ internal static class Program
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
-
+        
+        Env.TraversePath().Load();
         builder.Services
             .RegisterDataServices()
             .UseKafkaProducer();
         
-        Env.TraversePath().Load();
-        var connectionString = Environment.GetEnvironmentVariable("SQL_CONNECTION");
-        ArgumentException.ThrowIfNullOrWhiteSpace(connectionString);
-        
-        builder.Services.AddDbContext<ProductDbContext>(options =>
-            options.UseSqlServer(connectionString));
+        builder.Services.UseDataMsSql();
 
         var app = builder.Build();
         if (app.Environment.IsDevelopment())
