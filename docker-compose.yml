@@ -23,6 +23,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:${API_PORT_HTTP}
       - ConnectionStrings__DefaultConnection=${SQL_CONNECTION}
+      - KAFKA_HOST=kafka
+      - KAFKA_PORT=9092
     depends_on:
       - sqlserver
       - kafka

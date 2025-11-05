@@ -21,12 +21,19 @@
     <ItemGroup>
       <PackageReference Include="Confluent.Kafka" Version="2.12.0" />
       <PackageReference Include="DotNetEnv" Version="3.1.1" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.10" />
+      <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.10" />
     </ItemGroup>
 
     <ItemGroup>
       <Reference Include="DotNetEnv">
         <HintPath>..\..\..\.nuget\packages\dotnetenv\3.1.1\lib\netstandard1.3\DotNetEnv.dll</HintPath>
       </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Data\Data.csproj" />
+      <ProjectReference Include="..\Domain\Domain.csproj" />
     </ItemGroup>
 
 </Project>

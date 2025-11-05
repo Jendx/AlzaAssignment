@@ -1,4 +1,6 @@
+using Api.Commands;
 using Api.Helpers;
+using Domain.DTOs;
 using Domain.Providers;
 
 namespace Api.Endpoints.V2;
@@ -17,6 +19,14 @@ internal static class ProductEndpointsV2
             .WithName("GetAllProductsV2")
             .WithDescription("Returns max 10 products by default");
 
+        group.MapPatch("/", async (UpdateProductStockCommand updateCommand, IProductService service) =>
+            {
+                await service.QueueUpdateProductStockAsync(new UpdateProductDto(updateCommand.Id, updateCommand.NewStock));
+
+            }).WithName("QueueProductStockUpdate")
+            .WithDisplayName("Enqueue Product stock update")
+            .WithDescription("Allows 'bulk' updates of product stock using messaging service");
+        
         return endpoints;
     }
 }

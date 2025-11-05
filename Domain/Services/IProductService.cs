@@ -4,9 +4,16 @@ namespace Domain.Providers;
 
 public interface IProductService
 {
-    Task<ProductDto> GetProductAsync(Guid id);
-    Task<List<ProductDto>> GetAllProductsAsync();
-    Task<List<ProductDto>> GetProductsAsync(int skip, int take);
-    Task<ProductDto> UpdateProductStockAsync(Guid id, int newStock);
-    Task<ProductDto> CreateProductAsync(ProductDto newProduct);
+    public Task<ProductDto> GetProductAsync(Guid id);
+    public Task<List<ProductDto>> GetAllProductsAsync();
+    public Task<List<ProductDto>> GetProductsAsync(int skip, int take);
+    public Task<ProductDto> UpdateProductStockAsync(Guid id, int newStock);
+    
+    /// <summary>
+    /// Enqueues update request
+    /// </summary>
+    /// <param name="updateProductDto"></param>
+    /// <returns></returns>
+    public Task QueueUpdateProductStockAsync(UpdateProductDto updateProductDto);
+    public Task<ProductDto> CreateProductAsync(ProductDto newProduct);
 }

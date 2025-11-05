@@ -32,9 +32,10 @@ internal static class ProductEndpointsV1
             return Results.Ok(createdProduct);
         }).WithName("CreateProduct");
 
-        group.MapPatch("/", (UpdateProductStockCommand updateCommand, IProductService service) =>
+        group.MapPatch("/", async (UpdateProductStockCommand updateCommand, IProductService service) =>
         {
-            service.UpdateProductStockAsync(updateCommand.Id, updateCommand.NewStock);
+            var updateResult = await service.UpdateProductStockAsync(updateCommand.Id, updateCommand.NewStock);
+            return Results.Ok(updateResult);
 
         }).WithName("UpdateProductStock")
         .WithDisplayName("Update Product")

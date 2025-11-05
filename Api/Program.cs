@@ -20,7 +20,9 @@ internal static class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
-        builder.Services.RegisterServices();
+        builder.Services
+            .RegisterDataServices()
+            .UseKafkaProducer();
         
         Env.TraversePath().Load();
         var connectionString = Environment.GetEnvironmentVariable("SQL_CONNECTION");
