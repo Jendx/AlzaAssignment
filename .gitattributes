@@ -1,0 +1,2 @@
+#ENFORCE LF for .sh files to work correctly
+* text eol=lf
