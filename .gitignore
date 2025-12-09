@@ -155,5 +155,5 @@ $RECYCLE.BIN/
 
 _NCrunch*
 
-# Contains env settings (Will be passed in email)
-**/.env
+# Contains env settings 
+#**/.env
