@@ -1,4 +1,4 @@
-IF DB_ID('AdventureWorks2022') IS NULL
+IF DB_ID('Product') IS NULL
 BEGIN
     CREATE DATABASE Product;
 END
