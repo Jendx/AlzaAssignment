@@ -37,3 +37,9 @@ You should be able to run the API project in your IDE along the containers
 Previously I kept it out of source control to be secure.
 These files should never be in version control, but I added it for convenience + this is just assignment.
 I'm just leaving comment here for clarity
+
+## links
+
++ App with swagger created from Docker is hosted on: http://localhost:7742/swagger/index.html
++ Swagger when launching app from IDE: https://localhost:7042/swagger/index.html
+Ports can be configured in dockerfile/.env
