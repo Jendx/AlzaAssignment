@@ -23,7 +23,7 @@ Docker will set up the API & MSSQL server
 
 For MSSQL server docker will run SQL scripts from init folder to create & seed the db
 
-.ENV are attached in email
+<img width="1605" height="292" alt="image" src="https://github.com/user-attachments/assets/7e73ea8a-cccd-49f5-b059-e9f32f06993e" />
 
 ### Local Development
 + .NET 8 SDK
@@ -43,3 +43,5 @@ I'm just leaving comment here for clarity
 + App with swagger created from Docker is hosted on: http://localhost:7742/swagger/index.html
 + Swagger when launching app from IDE: https://localhost:7042/swagger/index.html
 Ports can be configured in dockerfile/.env
+
+
